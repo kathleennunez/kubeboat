@@ -11,7 +11,6 @@ function validate(payload: Record<string, unknown>) {
   const email = normalize(payload.email).toLowerCase();
   const company = normalize(payload.company);
   const dietaryConstraints = normalize(payload.dietaryConstraints);
-  const refundableDeposit = normalize(payload.refundableDeposit);
   const privacyConsent = payload.privacyConsent === true;
 
   if (!name) return { ok: false as const, message: "Name is required." };
@@ -25,7 +24,7 @@ function validate(payload: Record<string, unknown>) {
 
   return {
     ok: true as const,
-    registration: { name, email, company, dietaryConstraints, refundableDeposit, privacyConsent },
+    registration: { name, email, company, dietaryConstraints, privacyConsent },
   };
 }
 
@@ -53,6 +52,7 @@ export async function POST(req: Request) {
     const submittedAt = new Date().toISOString();
     fallbackPayload = {
       ...result.registration,
+      refundableDeposit: "",
       submittedAt,
     };
 
@@ -62,7 +62,7 @@ export async function POST(req: Request) {
       email: result.registration.email,
       company: result.registration.company,
       dietary_constraints: result.registration.dietaryConstraints,
-      refundable_deposit: result.registration.refundableDeposit,
+      refundable_deposit: "",
       privacy_consent: result.registration.privacyConsent,
       submitted_at: submittedAt,
     });

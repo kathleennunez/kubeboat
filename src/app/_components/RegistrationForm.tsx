@@ -24,7 +24,6 @@ export default function RegistrationForm() {
       email: String(data.get("email") ?? ""),
       company: String(data.get("company") ?? ""),
       dietaryConstraints: String(data.get("dietaryConstraints") ?? ""),
-      refundableDeposit: String(data.get("refundableDeposit") ?? ""),
       privacyConsent: data.get("privacyConsent") === "on",
     };
 
@@ -89,18 +88,6 @@ export default function RegistrationForm() {
         />
       </div>
       <div>
-        <label className="mb-3 block font-headline text-xs uppercase tracking-widest text-on-surface-variant">Refundable Deposit</label>
-        <select
-          name="refundableDeposit"
-          className="w-full border-4 border-outline-variant bg-surface-container-highest px-4 py-3 text-on-surface focus:border-primary focus:ring-0"
-          defaultValue=""
-        >
-          <option value="">Prefer not to say</option>
-          <option value="yes">Yes, I would pay a refundable deposit</option>
-          <option value="no">No, I would not pay a refundable deposit</option>
-        </select>
-      </div>
-      <div>
         <label className="mb-3 block font-headline text-xs uppercase tracking-widest text-on-surface-variant">DIETARY_CONSTRAINTS</label>
         <textarea
           name="dietaryConstraints"
@@ -118,7 +105,10 @@ export default function RegistrationForm() {
           />
           <span>
             I agree to the{" "}
-            <a className="text-primary underline hover:text-white" href="#privacy-policy">
+            <a
+              className="font-semibold text-primary underline decoration-2 underline-offset-2 transition-colors hover:text-white"
+              href="/privacy-policy"
+            >
               privacy policy
             </a>
             . KubeBoat may use my name and email to send me updates about this event.{" "}
