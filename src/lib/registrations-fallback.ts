@@ -1,5 +1,4 @@
-import { promises as fs } from "fs";
-import path from "path";
+import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 
 type BackupRecord = {
   name: string;
@@ -14,16 +13,32 @@ type BackupRecord = {
   reason?: string;
 };
 
-const DATA_DIR = process.env.VERCEL ? "/tmp" : path.join(process.cwd(), "data");
-const BACKUP_FILE = path.join(DATA_DIR, "registrations-backup.ndjson");
-
 export async function appendBackupRecord(record: BackupRecord) {
   try {
-    await fs.mkdir(DATA_DIR, { recursive: true });
-    await fs.appendFile(BACKUP_FILE, `${JSON.stringify(record)}\n`, "utf8");
+    const supabase = getSupabaseAdminClient();
+    const { error } = await supabase.from("registrations_fallback").insert({
+      name: record.name,
+      email: record.email,
+      company: record.company,
+      dietary_constraints: record.dietaryConstraints,
+      refundable_deposit: record.refundableDeposit,
+      privacy_consent: record.privacyConsent,
+      submitted_at: record.submittedAt,
+      storage: record.storage,
+      status: record.status,
+      reason: record.reason ?? "",
+    });
+    if (error) {
+      console.error("Supabase fallback write failed", {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+      });
+      return false;
+    }
     return true;
   } catch (error) {
-    console.error("Fallback backup write failed", error);
+    console.error("Fallback backup write exception", error);
     return false;
   }
 }

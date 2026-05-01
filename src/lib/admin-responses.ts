@@ -1,9 +1,4 @@
-import { promises as fs } from "fs";
-import path from "path";
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
-
-const DATA_DIR = path.join(process.cwd(), "data");
-const BACKUP_FILE = path.join(DATA_DIR, "registrations-backup.ndjson");
 
 export type ResponseSource = "supabase" | "fallback";
 
@@ -33,10 +28,10 @@ type BackupRegistration = {
   name: string;
   email: string;
   company: string;
-  dietaryConstraints: string;
-  refundableDeposit: string;
-  privacyConsent: boolean;
-  submittedAt: string;
+  dietary_constraints: string;
+  refundable_deposit: string;
+  privacy_consent: boolean;
+  submitted_at: string;
   storage: "supabase" | "fallback";
   status: "saved" | "fallback_saved";
   reason?: string;
@@ -80,21 +75,32 @@ export async function fetchSupabaseRows() {
 
 export async function readFallbackRows() {
   try {
-    const raw = await fs.readFile(BACKUP_FILE, "utf8");
-    const parsed = raw
-      .split("\n")
-      .map((line) => line.trim())
-      .filter(Boolean)
-      .map((line) => JSON.parse(line) as BackupRegistration)
-      .filter((row) => row.storage === "fallback");
+    const supabase = getSupabaseAdminClient();
+    const { data, error } = await supabase
+      .from("registrations_fallback")
+      .select(
+        "name,email,company,dietary_constraints,refundable_deposit,privacy_consent,submitted_at,storage,status,reason",
+      )
+      .eq("storage", "fallback")
+      .order("submitted_at", { ascending: false })
+      .limit(5000);
 
-    return parsed.map((row) => ({
-      submittedAt: row.submittedAt,
+    if (error) {
+      console.error("Supabase fallback read error", {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+      });
+      return [] as ResponseRow[];
+    }
+
+    return ((data ?? []) as BackupRegistration[]).map((row) => ({
+      submittedAt: row.submitted_at,
       name: row.name,
       email: row.email,
       company: row.company || "",
-      refundableDeposit: row.refundableDeposit || "",
-      privacyConsent: row.privacyConsent,
+      refundableDeposit: row.refundable_deposit || "",
+      privacyConsent: row.privacy_consent,
       source: "fallback" as const,
       status: "fallback_saved" as const,
       reason: row.reason || "",
@@ -171,4 +177,3 @@ export function rowsToCsv(rows: ResponseRow[]) {
 
   return [header.join(","), ...lines].join("\n");
 }
-
