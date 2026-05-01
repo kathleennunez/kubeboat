@@ -41,19 +41,22 @@ export default function Home() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-background/80" />
           </div>
-          <div className="reveal-on-scroll z-20 mx-auto max-w-4xl px-4 py-16 sm:py-20" data-reveal>
-            <h1 className="pixel-shadow mb-4 font-headline text-5xl font-black uppercase italic leading-none tracking-tighter text-primary sm:text-6xl md:text-9xl">
+          <div className="reveal-on-scroll z-20 mx-auto flex max-w-4xl flex-col items-center gap-6 px-4 py-16 sm:gap-8 sm:py-20" data-reveal>
+            <h1 className="pixel-shadow font-headline text-5xl font-black uppercase italic leading-none tracking-tighter text-primary sm:text-6xl md:text-9xl">
               KUBEBOAT
             </h1>
-            <p className="mx-auto mb-12 max-w-2xl px-2 font-headline text-lg font-bold uppercase tracking-wide text-on-surface drop-shadow-lg sm:text-xl sm:tracking-widest md:text-2xl">
-              The unofficial KubeCon EU 2027 boat party.
+            <p className="mx-auto max-w-2xl px-2 font-headline text-lg font-bold uppercase tracking-wide text-on-surface drop-shadow-lg sm:text-xl sm:tracking-widest md:text-2xl">
+              THE UNOFFICIAL KUBECON EU 2027 BOAT PARTY.
+            </p>
+            <p className="mx-auto max-w-2xl px-2 font-headline text-base font-bold uppercase tracking-wide text-primary drop-shadow-lg sm:text-lg sm:tracking-widest md:text-xl">
+              Save the Date 14th March 2027
             </p>
             <div className="flex justify-center gap-4">
               <a
                 className="pixel-shadow bg-primary px-6 py-3 font-headline text-base font-black uppercase italic tracking-wide text-white transition-all duration-75 steps-4 hover:-translate-y-1 hover:bg-white hover:text-background sm:px-8 sm:py-4 sm:text-lg sm:tracking-widest"
                 href="#crew"
               >
-                SECURE YOUR spot
+                SECURE YOUR SPOT
               </a>
             </div>
           </div>

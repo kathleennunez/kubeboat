@@ -55,13 +55,13 @@ export default function RegistrationForm() {
       <div className="grid gap-6 sm:gap-8 md:grid-cols-2">
         <div>
           <label className="mb-3 block font-headline text-xs uppercase tracking-widest text-on-surface-variant">
-            Name <span className="text-primary">*</span>
+            Full Name <span className="text-primary">*</span>
           </label>
           <input
             name="name"
             required
             className="w-full border-4 border-outline-variant bg-surface-container-highest px-4 py-3 text-on-surface placeholder:opacity-30 focus:border-primary focus:ring-0"
-            placeholder="Full Captain Name"
+            placeholder="Full Name"
             type="text"
           />
         </div>
